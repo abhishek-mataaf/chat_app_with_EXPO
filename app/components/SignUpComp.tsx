@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Link , router } from "expo-router";
 import { useEffect, useState } from "react";
 import { View, Text, TextInput, Pressable, StyleSheet } from "react-native"
 
@@ -54,6 +55,9 @@ export default function SignUpComp() {
 
     const signUpFunc = async () => {
         try {
+            // let result: any = await AsyncStorage.setItem('userData', "[{'name':'abhi'}]")
+            // console.log(result);
+
             if (isValid) {
                 let data = await AsyncStorage.getItem('userData');
                 if (data) {
@@ -70,6 +74,12 @@ export default function SignUpComp() {
                         alert("User succesfully inserted.")
                     }
                 }
+                else {
+                    let result: any = await AsyncStorage.setItem('userData', JSON.stringify([userData]));
+                    console.log();
+
+                    alert("User succesfully inserted.")
+                }
 
             }
             else {
@@ -82,8 +92,10 @@ export default function SignUpComp() {
 
     }
     const loginLinkFunc = async () => {
-        let data = await AsyncStorage.getItem('userData');
-        console.log(data);
+        // let data = await AsyncStorage.getItem('userData');
+        // console.log(data);
+        router.push('/components/LoginComp')
+
     }
     return (
         <>
@@ -152,7 +164,7 @@ export default function SignUpComp() {
                     </Pressable>
                     <View style={styles.footerBox}>
                         <Pressable onPress={() => loginLinkFunc()}>
-                            <Text style={styles.linkText}>Already a user ? Login</Text>
+                                <Text style={styles.linkText}>Already a user ? Login</Text>
                         </Pressable>
                     </View>
                 </View>

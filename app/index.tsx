@@ -3,6 +3,7 @@ import { StyleSheet, Text, View , ScrollView } from 'react-native';
 import LoginComp from './components/LoginComp';
 import SignUpComp from './components/SignUpComp';
 
+
 export default function App() {
   return (
     <View style={styles.container}>
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#ffff99',
     alignItems: 'center',
-    // justifyContent: 'space-evenly',
+    justifyContent: 'center',
   },
   textDetail: {
     fontWeight: 'bold',

@@ -1,7 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Link, useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import { View, Text, TextInput, Pressable, StyleSheet, TouchableHighlight } from "react-native"
+
+
 export default function LoginComp() {
+    const navigatePath = useRouter()
     const [userIdInp, setUserIdInp] = useState('')
     const [userPassInp, setUserPassInp] = useState('')
     const [userData, setuserData] = useState<{ userId: string, userPass: string }>()
@@ -19,17 +23,18 @@ export default function LoginComp() {
             let isUser = checkUser.find((element: { userEmail: string | undefined, userPass: string | undefined }) => {
                 return element.userEmail == userData?.userId && element.userPass == userData?.userPass
             });
-            if(isUser){
+            if (isUser) {
                 alert("Login Done")
             }
-            else{
+            else {
                 alert('Used id or password is invaild')
             }
-            
+
         }
     }
     const NewUserAddFunc = () => {
-        alert("New user")
+        // router.push('/components/SignUpComp')
+        navigatePath.push('/components/SignUpComp')
     }
     const PassForgetFunc = () => {
 
@@ -85,7 +90,11 @@ export default function LoginComp() {
                     </Pressable>
                     <View style={styles.footerBox}>
                         <Pressable onPress={() => NewUserAddFunc()}>
+                            {/* <Link href={{
+                                pathname:'/components/SignUpComp'
+                            }}> */}
                             <Text style={styles.linkText}>New User ?</Text>
+                            {/* </Link> */}
                         </Pressable>
                         <Pressable onPress={() => PassForgetFunc()}>
                             <Text style={styles.linkText}>forget Password</Text>
