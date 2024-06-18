@@ -1,9 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Link , router } from "expo-router";
 import { useEffect, useState } from "react";
-import { View, Text, TextInput, Pressable, StyleSheet } from "react-native"
+import { View, Text, TextInput, Pressable, StyleSheet, ScrollView } from "react-native"
 
-export default function SignUpComp() {
+export default function SignUpComp({ switchToLogin}:any) {
     const [userNameInp, setUserNameInp] = useState<string>('')
     const [userEmailInp, setUserEmailInp] = useState<string>('')
     const [userPhoneInp, setUserPhoneInp] = useState<string>('')
@@ -76,8 +75,6 @@ export default function SignUpComp() {
                 }
                 else {
                     let result: any = await AsyncStorage.setItem('userData', JSON.stringify([userData]));
-                    console.log();
-
                     alert("User succesfully inserted.")
                 }
 
@@ -91,84 +88,80 @@ export default function SignUpComp() {
         }
 
     }
-    const loginLinkFunc = async () => {
-        // let data = await AsyncStorage.getItem('userData');
-        // console.log(data);
-        router.push('/components/LoginComp')
-
-    }
     return (
         <>
-            <View style={{
-                // borderColor: 'black',
-                // borderWidth: 2,
-                backgroundColor: 'yellow',
-                shadowColor: 'grey',
-                shadowOpacity: 0.2,
-                shadowOffset: { width: -2, height: -4 },
-                elevation: 5,
-                shadowRadius: 2,
-                height: 550,
-                width: 300,
-                borderRadius: 10
-
-            }}>
+            <ScrollView>
                 <View style={{
-                    borderColor: 'black',
-                    borderBottomWidth: 2,
-                    paddingVertical: 5,
-                    alignItems: 'center',
-                    // backgroundColor: 'black',
-                    borderTopLeftRadius: 7,
-                    borderTopRightRadius: 7,
-                    // borderBottomEndRadius:2
+                    // borderColor: 'black',
+                    // borderWidth: 2,
+                    backgroundColor: 'yellow',
+                    shadowColor: 'grey',
+                    shadowOpacity: 0.2,
+                    shadowOffset: { width: -2, height: -4 },
+                    elevation: 5,
+                    shadowRadius: 2,
+                    height: 550,
+                    width: 300,
+                    borderRadius: 10
+
                 }}>
-                    <Text style={{
-                        fontSize: 25,
-                        fontWeight: '700',
-                        // color: 'yellow'
-                    }}>Sign Up</Text>
-                </View>
-
-                <View style={{
-                    flex: 1,
-                    gap: 20,
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}>
-                    <View>
-                        <TextInput onChangeText={(newText) => setUserNameInp(newText)} style={styles.TextDetail} placeholder="Enter your name" />
-                        <Text>{error.name}</Text>
+                    <View style={{
+                        borderColor: 'black',
+                        borderBottomWidth: 2,
+                        paddingVertical: 5,
+                        alignItems: 'center',
+                        // backgroundColor: 'black',
+                        borderTopLeftRadius: 7,
+                        borderTopRightRadius: 7,
+                        // borderBottomEndRadius:2
+                    }}>
+                        <Text style={{
+                            fontSize: 25,
+                            fontWeight: '700',
+                            // color: 'yellow'
+                        }}>Sign Up</Text>
                     </View>
-                    <View>
-                        <TextInput onChangeText={(newText) => setUserEmailInp(newText)} style={styles.TextDetail} placeholder="Enter your mail Id" />
-                        <Text>{error.email}</Text>
 
-                    </View>
-                    <View>
-                        <TextInput onChangeText={(newText) => setUserPhoneInp(newText)} style={styles.TextDetail} placeholder="Enter your phone no." />
-                        <Text>{error.phone}</Text>
-
-                    </View>
-                    <View>
-                        <TextInput textContentType="password" onChangeText={(newText) => setUserPassInp(newText)} style={styles.TextDetail} placeholder="Create password" />
-                        <Text>{error.pass}</Text>
-
-                    </View>
-                    <Pressable onPress={() => signUpFunc()}>
-                        <View style={styles.LoginButton}>
-                            <Text style={styles.LoginButtonText}>
-                                Sign Up
-                            </Text>
+                    <View style={{
+                        flex: 1,
+                        gap: 20,
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}>
+                        <View>
+                            <TextInput onChangeText={(newText) => setUserNameInp(newText)} style={styles.TextDetail} placeholder="Enter your name" />
+                            <Text>{error.name}</Text>
                         </View>
-                    </Pressable>
-                    <View style={styles.footerBox}>
-                        <Pressable onPress={() => loginLinkFunc()}>
-                                <Text style={styles.linkText}>Already a user ? Login</Text>
+                        <View>
+                            <TextInput onChangeText={(newText) => setUserEmailInp(newText)} style={styles.TextDetail} placeholder="Enter your mail Id" />
+                            <Text>{error.email}</Text>
+
+                        </View>
+                        <View>
+                            <TextInput onChangeText={(newText) => setUserPhoneInp(newText)} style={styles.TextDetail} placeholder="Enter your phone no." />
+                            <Text>{error.phone}</Text>
+
+                        </View>
+                        <View>
+                            <TextInput textContentType="password" onChangeText={(newText) => setUserPassInp(newText)} style={styles.TextDetail} placeholder="Create password" />
+                            <Text>{error.pass}</Text>
+
+                        </View>
+                        <Pressable onPress={() => signUpFunc()}>
+                            <View style={styles.LoginButton}>
+                                <Text style={styles.LoginButtonText}>
+                                    Sign Up
+                                </Text>
+                            </View>
                         </Pressable>
+                        <View style={styles.footerBox}>
+                            <Pressable onPress={switchToLogin}>
+                                <Text style={styles.linkText}>Already a user ? Login</Text>
+                            </Pressable>
+                        </View>
                     </View>
                 </View>
-            </View>
+            </ScrollView>
         </>
     )
 }

@@ -1,11 +1,11 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { View, Text, TextInput, Pressable, StyleSheet, TouchableHighlight } from "react-native"
+import { View, Text, TextInput, Pressable, StyleSheet } from "react-native"
 
 
-export default function LoginComp() {
-    const navigatePath = useRouter()
+export default function LoginComp({ switchToSignup }: any) {
+    const route = useRouter()
     const [userIdInp, setUserIdInp] = useState('')
     const [userPassInp, setUserPassInp] = useState('')
     const [userData, setuserData] = useState<{ userId: string, userPass: string }>()
@@ -16,6 +16,7 @@ export default function LoginComp() {
             userPass: userPassInp
         })
     }, [userIdInp, userPassInp])
+
     const LogInFunction = async () => {
         let res: string | null = await AsyncStorage.getItem('userData');
         if (res) {
@@ -24,7 +25,7 @@ export default function LoginComp() {
                 return element.userEmail == userData?.userId && element.userPass == userData?.userPass
             });
             if (isUser) {
-                alert("Login Done")
+                route.push('components/HomePage')
             }
             else {
                 alert('Used id or password is invaild')
@@ -32,19 +33,12 @@ export default function LoginComp() {
 
         }
     }
-    const NewUserAddFunc = () => {
-        // router.push('/components/SignUpComp')
-        navigatePath.push('/components/SignUpComp')
-    }
-    const PassForgetFunc = () => {
-
-    }
     return (
         <>
             <View style={{
                 backgroundColor: 'yellow',
                 shadowColor: 'grey',
-                shadowOpacity: 0.2,
+                shadowOpacity: 0.4,
                 shadowOffset: { width: -2, height: -4 },
                 elevation: 5,
                 shadowRadius: 2,
@@ -89,15 +83,8 @@ export default function LoginComp() {
                         </View>
                     </Pressable>
                     <View style={styles.footerBox}>
-                        <Pressable onPress={() => NewUserAddFunc()}>
-                            {/* <Link href={{
-                                pathname:'/components/SignUpComp'
-                            }}> */}
+                        <Pressable onPress={switchToSignup}>
                             <Text style={styles.linkText}>New User ?</Text>
-                            {/* </Link> */}
-                        </Pressable>
-                        <Pressable onPress={() => PassForgetFunc()}>
-                            <Text style={styles.linkText}>forget Password</Text>
                         </Pressable>
                     </View>
                 </View>

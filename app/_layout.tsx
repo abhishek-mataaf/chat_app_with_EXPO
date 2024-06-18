@@ -1,16 +1,27 @@
 // app/_layout.tsx
-import { Stack, usePathname } from 'expo-router';
-import { View } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import SignUpComp from './components/SignUpComp';
+import LoginComp from './components/LoginComp';
+import Main from './components/StartPage'
+import HomePage from './components/HomePage';
+const Stack = createNativeStackNavigator()
 
 export default function Layout() {
-  const pathname = usePathname();
-  console.log(pathname);
-  
-  const showHeader = false; // Adjust the condition based on your needs
+
 
   return (
-    <View style={{ flex: 1 }}>
-      <Stack screenOptions={{ headerShown: showHeader }} />
-    </View>
+    <Stack.Navigator>
+      <Stack.Screen
+        name="index"
+        component={Main}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="components/HomePage"
+        component={HomePage}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+
   );
 }
