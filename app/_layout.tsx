@@ -5,6 +5,7 @@ import LoginComp from './components/LoginComp';
 import Main from './components/StartPage'
 import HomePage from './components/HomePage';
 import FrontPage from './components/FrontPage';
+import ChatScreen from './components/ChatScreen';
 const Stack = createNativeStackNavigator()
 
 export default function Layout() {
@@ -25,6 +26,11 @@ export default function Layout() {
       <Stack.Screen
         name="components/FrontPage"
         component={FrontPage}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="components/ChatScreen"
+        component={ChatScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

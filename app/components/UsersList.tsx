@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import DummyUsers from '../../UserData/users.json'
 import React, { useEffect, useState } from 'react';
 import { Image, StyleSheet, Text, View, FlatList, ListRenderItem, TouchableOpacity, ScrollView } from 'react-native';
+import { useRouter } from 'expo-router';
 
 interface User {
     id: string;
@@ -13,13 +14,17 @@ interface User {
 }
 
 const UsersList = () => {
+    const route = useRouter()
     const [userData, setuserData] = useState<User[]>([]);
     useEffect(() => {
         setuserData(DummyUsers);
-    }, [])
+    }, [DummyUsers])
     const renderItems: ListRenderItem<User> = ({ item }) => {
         return (
-            <TouchableOpacity onPress={() => { alert(item.userName) }}>
+            <TouchableOpacity onPress={() => {
+                route.push("components/ChatScreen")
+                route.setParams({ user: JSON.stringify(item) })
+            }}>
                 <View style={styles.item}>
                     <View style={styles.profileBox}>
                         <Image style={styles.img} source={{ uri: item.userPicPath }}
@@ -32,7 +37,7 @@ const UsersList = () => {
                         </View>
                         <View style={styles.innerBox}>
                             <Text style={styles.fadeText}>{
-                                item.lastMessage.length < 20 ? item.lastMessage : `${item.lastMessage.slice(0, 20)}...`
+                                 item.lastMessage.length < 20 ? item.lastMessage : `${item.lastMessage.slice(0, 20)}...`
                             }</Text>
                             <FontAwesomeIcon icon={faCheckDouble} />
                         </View>
