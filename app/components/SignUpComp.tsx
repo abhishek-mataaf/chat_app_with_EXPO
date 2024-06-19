@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import { View, Text, TextInput, Pressable, StyleSheet, ScrollView } from "react-native"
 
-export default function SignUpComp({ switchToLogin}:any) {
+export default function SignUpComp({ switchToLogin }: any) {
     const [userNameInp, setUserNameInp] = useState<string>('')
     const [userEmailInp, setUserEmailInp] = useState<string>('')
     const [userPhoneInp, setUserPhoneInp] = useState<string>('')
@@ -71,11 +71,13 @@ export default function SignUpComp({ switchToLogin}:any) {
                         let newUserAdd: string = JSON.stringify([userData, ...JSON.parse(data)]);
                         let result: any = await AsyncStorage.setItem('userData', newUserAdd)
                         alert("User succesfully inserted.")
+                        switchToLogin();
                     }
                 }
                 else {
                     let result: any = await AsyncStorage.setItem('userData', JSON.stringify([userData]));
                     alert("User succesfully inserted.")
+                    switchToLogin();
                 }
 
             }
@@ -98,7 +100,7 @@ export default function SignUpComp({ switchToLogin}:any) {
                     shadowColor: 'grey',
                     shadowOpacity: 0.2,
                     shadowOffset: { width: -2, height: -4 },
-                    elevation: 5,
+                    // elevation: 5,
                     shadowRadius: 2,
                     height: 550,
                     width: 300,
@@ -143,7 +145,7 @@ export default function SignUpComp({ switchToLogin}:any) {
 
                         </View>
                         <View>
-                            <TextInput textContentType="password" onChangeText={(newText) => setUserPassInp(newText)} style={styles.TextDetail} placeholder="Create password" />
+                            <TextInput secureTextEntry={true} onChangeText={(newText) => setUserPassInp(newText)} style={styles.TextDetail} placeholder="Create password" />
                             <Text>{error.pass}</Text>
 
                         </View>

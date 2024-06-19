@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { View, Text, TextInput, Pressable, StyleSheet } from "react-native"
+import { View, Text, TextInput, Pressable, StyleSheet, TouchableOpacity } from "react-native"
 
 
 export default function LoginComp({ switchToSignup }: any) {
@@ -38,10 +38,11 @@ export default function LoginComp({ switchToSignup }: any) {
             <View style={{
                 backgroundColor: 'yellow',
                 shadowColor: 'grey',
-                shadowOpacity: 0.4,
-                shadowOffset: { width: -2, height: -4 },
-                elevation: 5,
+                shadowOpacity: 1.4,
+                shadowOffset: { width: 1, height: 4 },
                 shadowRadius: 2,
+                elevation: 10,
+                overflow: 'scroll',
                 height: 550,
                 width: 300,
                 borderRadius: 10
@@ -73,15 +74,17 @@ export default function LoginComp({ switchToSignup }: any) {
                         <TextInput onChangeText={(newText) => setUserIdInp(newText)} style={styles.TextDetail} placeholder="User ID" />
                     </View>
                     <View>
-                        <TextInput onChangeText={(newText) => setUserPassInp(newText)} style={styles.TextDetail} placeholder="Password" />
+                        <TextInput secureTextEntry={true} onChangeText={(newText) => setUserPassInp(newText)} style={styles.TextDetail} placeholder="Password" />
                     </View>
-                    <Pressable onPress={() => LogInFunction()}>
-                        <View style={styles.LoginButton}>
-                            <Text style={styles.LoginButtonText}>
-                                Login
-                            </Text>
-                        </View>
-                    </Pressable>
+                    <TouchableOpacity>
+                        <Pressable onPress={() => LogInFunction()}>
+                            <View style={styles.LoginButton}>
+                                <Text style={styles.LoginButtonText}>
+                                    Login
+                                </Text>
+                            </View>
+                        </Pressable>
+                    </TouchableOpacity>
                     <View style={styles.footerBox}>
                         <Pressable onPress={switchToSignup}>
                             <Text style={styles.linkText}>New User ?</Text>
