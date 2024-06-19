@@ -26,6 +26,7 @@ export default function LoginComp({ switchToSignup }: any) {
             });
             if (isUser) {
                 route.push('components/HomePage')
+                route.setParams({ currentUser: JSON.stringify(isUser) })
             }
             else {
                 alert('Used id or password is invaild')

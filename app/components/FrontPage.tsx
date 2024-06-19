@@ -4,12 +4,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import UsersList from './UsersList';
+import { useGlobalSearchParams } from 'expo-router';
 const FrontPage = () => {
+    const { currentUser1 }: any = useGlobalSearchParams();
+
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.headerText}>
-                    Hey Abhishek
+                    Hey {JSON.parse(currentUser1).userName.split(' ')[0]}
                 </Text>
                 <FontAwesomeIcon icon={faFaceLaughWink} style={{ color: 'white' }} secondaryColor='red' />
             </View>

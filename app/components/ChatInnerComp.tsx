@@ -1,9 +1,9 @@
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, ImageBackground, View, TextInput, TouchableOpacity, FlatList } from 'react-native';
+import { ScrollView, StyleSheet, Text, ImageBackground, View, TextInput, TouchableOpacity, FlatList, _ScrollView, Animated } from 'react-native';
 import userData from "../../UserData/users.json"
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 interface Message {
     messageId: string,
     text: string
@@ -15,14 +15,38 @@ interface Message {
 }
 
 const ChatInnerComp = ({ userDetail }: any) => {
-    const [messages, setMessages] = useState<Message[] | undefined>([]);
+    const [messages, setMessages] = useState<Message[]>([]);
+    const [input, setInput] = useState<string>('');
+    const [resp, setResp] = useState<any>();
+    const [dep, setDep] = useState<boolean>(false);
     useEffect(() => {
         let resp = userData.find((item) => userDetail.id == item.id);
         if (resp) {
             setMessages(resp.messageArray);
+            setResp(resp.messageArray);
         }
 
-    }, [userData]);
+    }, [dep]);
+
+    const messageSendFunc = () => {
+        if (input !== '') {
+            let newMsg: Message = {
+                messageId: Math.random().toString(),
+                text: input,
+                timestamp: new Date().toISOString().slice(0, 19),
+                senderId: "1002",
+                reciverId: "1010",
+                status: "sent",
+                userType: "1"
+            }
+            setMessages(() => resp.push(newMsg))
+            setInput('');
+            setDep(!dep ? true : false);
+        }
+        else {
+            setInput("please type something")
+        }
+    }
 
     const renderItem = ({ item }: { item: Message }) => {
         return (
@@ -34,23 +58,22 @@ const ChatInnerComp = ({ userDetail }: any) => {
         )
     }
     return (
+
         <View style={styles.container}>
-            {/* <View style={styles.chatsBox}> */}
-                <ScrollView style={styles.chatsBox}>
-                    <FlatList
-                        data={messages}
-                        renderItem={renderItem}
-                        keyExtractor={(item) => item.messageId}
-                    />
-                </ScrollView>
-            {/* </View> */}
+            <View style={styles.chatsBox}>
+                <FlatList
+                    data={messages}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.messageId}
+                />
+            </View>
             <View style={styles.msgBox}>
-                <TextInput placeholder='Type message' style={styles.chatInp} />
-                <TouchableOpacity >
-                    <FontAwesomeIcon style={{}} icon={faPaperPlane} size={20} />
+                <TextInput value={input} onChangeText={(inp) => setInput(inp)} placeholder='Type message' style={styles.chatInp} />
+                <TouchableOpacity onPress={() => messageSendFunc()}>
+                    <FontAwesomeIcon icon={faPaperPlane} size={20} />
                 </TouchableOpacity>
             </View>
-        </View>
+        </View >
 
     );
 }
@@ -64,7 +87,12 @@ const styles = StyleSheet.create({
         width: '50%',
         borderWidth: 1,
         borderColor: 'grey',
-        paddingLeft:10
+        paddingLeft: 10,
+        shadowColor: 'grey',
+        shadowOpacity: 1.9,
+        shadowOffset: { width: 1, height: 2 },
+        shadowRadius: 8,
+        elevation: 2,
     },
     user: {
         fontWeight: 'light',
@@ -75,20 +103,22 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
     myMsg: {
+        backgroundColor: '#ffcccc',
         alignSelf: 'flex-end', borderTopRightRadius: 0
     },
     otherMsg: {
+        backgroundColor: '#ccffcc',
         alignSelf: 'flex-start', borderTopLeftRadius: 0
     },
     container: {
-        backgroundColor: '#FFFBC4',
+        backgroundColor: '#FFFFF0',
         borderRadius: 20,
         height: '84%',
         flex: 0,
         justifyContent: 'space-between'
     },
     msgBox: {
-        bottom: 10,
+        bottom: 80,
         backgroundColor: 'white',
         borderWidth: 2,
         borderColor: 'grey',
@@ -111,7 +141,8 @@ const styles = StyleSheet.create({
         fontSize: 18
     },
     chatsBox: {
-
+        marginTop: 10,
+        marginBottom: 90
     }
 })
 

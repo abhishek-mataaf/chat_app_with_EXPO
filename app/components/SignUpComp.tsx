@@ -54,28 +54,37 @@ export default function SignUpComp({ switchToLogin }: any) {
 
     const signUpFunc = async () => {
         try {
-            // let result: any = await AsyncStorage.setItem('userData', "[{'name':'abhi'}]")
-            // console.log(result);
+            // let data = await AsyncStorage.getItem("userData");
+
+
 
             if (isValid) {
-                let data = await AsyncStorage.getItem('userData');
+                let data = await AsyncStorage.getItem("userData");
                 if (data) {
                     let checkUser = JSON.parse(data);
-                    let res = checkUser.find((element: { userEmail: string | undefined; }) => {
-                        return element.userEmail == userData?.userEmail
-                    });
-                    if (res) {
-                        alert("user Already exits");
+                    if (Array.isArray(checkUser)) {
+                        let res = checkUser.find((element: { userEmail: string | undefined; }) => {
+                            return element.userEmail == userData?.userEmail
+                        });
+                        if (res) {
+                            alert("user Already exits");
+                        }
+                        else {
+                            checkUser.push(userData);
+                            await AsyncStorage.setItem('userData', JSON.stringify(checkUser));
+                            alert("User successfully inserted.");
+                            switchToLogin();
+                        }
                     }
                     else {
                         let newUserAdd: string = JSON.stringify([userData, ...JSON.parse(data)]);
-                        let result: any = await AsyncStorage.setItem('userData', newUserAdd)
+                        let result: any = await AsyncStorage.setItem("userData", newUserAdd)
                         alert("User succesfully inserted.")
                         switchToLogin();
                     }
                 }
                 else {
-                    let result: any = await AsyncStorage.setItem('userData', JSON.stringify([userData]));
+                    let result: any = await AsyncStorage.setItem("userData", JSON.stringify([userData]));
                     alert("User succesfully inserted.")
                     switchToLogin();
                 }

@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, ImageBackground, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { useGlobalSearchParams } from 'expo-router'
 import usersJson from "../../UserData/users.json"
 import ChatInnerComp from './ChatInnerComp';
@@ -31,23 +31,25 @@ const ChatScreen = () => {
     }
     else {
         return (
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <View>
-                        <Image style={styles.img} source={{ uri: userData.userPicPath }}
-                        />
+   <ImageBackground source={require("../../assets/bgDark.jpg")} resizeMode='cover' style={{ flex: 1, justifyContent: 'center' }}>
+                    <View style={styles.container}>
+                        <View style={styles.header}>
+                            <View>
+                                <Image style={styles.img} source={{ uri: userData.userPicPath }}
+                                />
+                            </View>
+                            <View style={styles.secondaryBox}>
+                                <Text style={styles.headerText}>
+                                    {userData.userName}
+                                </Text>
+                                <Text style={styles.fadeText}>
+                                    {userData.status}
+                                </Text>
+                            </View>
+                        </View>
+                        <ChatInnerComp userDetail={userData} />
                     </View>
-                    <View style={styles.secondaryBox}>
-                        <Text style={styles.headerText}>
-                            {userData.userName}
-                        </Text>
-                        <Text style={styles.fadeText}>
-                            {userData.status}
-                        </Text>
-                    </View>
-                </View>
-                <ChatInnerComp userDetail={userData} />
-            </View>
+                </ImageBackground>
         );
     }
 }
@@ -56,8 +58,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 0,
         paddingTop: 20,
-        backgroundColor: 'black',
-        gap: 30
+        // backgroundColor: 'black',
+        gap: 30,
     },
     header: {
         borderBottomWidth: 1.5,

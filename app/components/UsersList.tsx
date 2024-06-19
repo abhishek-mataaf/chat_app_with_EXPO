@@ -11,13 +11,16 @@ interface User {
     userPicPath: string;
     msgTime: string;
     lastMessage: string;
+    messageArray: any
 }
 
 const UsersList = () => {
     const route = useRouter()
     const [userData, setuserData] = useState<User[]>([]);
     useEffect(() => {
-        setuserData(DummyUsers);
+        setuserData(DummyUsers)
+        // console.log(userData);
+
     }, [DummyUsers])
     const renderItems: ListRenderItem<User> = ({ item }) => {
         return (
@@ -33,29 +36,40 @@ const UsersList = () => {
                     <View style={styles.detailBox}>
                         <View style={styles.innerBox}>
                             <Text style={styles.nameText}>{item.userName}</Text>
-                            <Text style={styles.fadeText}>{item.msgTime}</Text>
+                            <Text style={styles.fadeText}>{
+                                item.messageArray.length == 0 ? "" : item.messageArray[item.messageArray.length - 1].timestamp.slice(11,16)
+                            }</Text>
                         </View>
                         <View style={styles.innerBox}>
                             <Text style={styles.fadeText}>{
-                                 item.lastMessage.length < 20 ? item.lastMessage : `${item.lastMessage.slice(0, 20)}...`
+                                item.messageArray.length == 0 ? "No messages yet..." :
+                                    item.messageArray[item.messageArray.length - 1].text.length < 20 ? item.messageArray[item.messageArray.length - 1].text : `${item.messageArray[item.messageArray.length - 1].text.slice(0, 20)}...`
                             }</Text>
-                            <FontAwesomeIcon icon={faCheckDouble} />
                         </View>
                     </View>
                 </View>
             </TouchableOpacity>
         )
     }
-    return (
-        <ScrollView contentContainerStyle={styles.container}>
-            <FlatList
-                data={userData}
-                renderItem={renderItems}
-                keyExtractor={item => item.id.toString()}
-            >
-            </FlatList>
-        </ScrollView>
-    );
+    if (!userData) {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.nameText}>Loading...</Text>
+            </View>
+        );
+    }
+    else {
+        return (
+            <View style={styles.container}>
+                <FlatList
+                    data={userData}
+                    renderItem={renderItems}
+                    keyExtractor={item => item.id.toString()}
+                >
+                </FlatList>
+            </View>
+        );
+    }
 }
 const styles = StyleSheet.create({
     container: {

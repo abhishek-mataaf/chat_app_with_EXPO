@@ -1,10 +1,12 @@
 import { faCircleCheck } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { useRouter } from 'expo-router';
+import { useGlobalSearchParams, useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, Image, StyleSheet, Button, Pressable, TouchableOpacity } from 'react-native';
 // "fa-solid fa-circle-check"
+
 const HomePage = () => {
+    const { currentUser }: any = useGlobalSearchParams();
     const route = useRouter()
     return (
         <View style={styles.container}>
@@ -23,7 +25,10 @@ const HomePage = () => {
                     />
                     <Text style={styles.text2}>Secure , private messaging</Text>
                 </View>
-                <TouchableOpacity style={styles.btnBox} onPress={() => route.push("components/FrontPage")}>
+                <TouchableOpacity style={styles.btnBox} onPress={() => {
+                    route.push("components/FrontPage")
+                    route.setParams({ currentUser1: currentUser })
+                }}>
                     <Text style={{
                         fontSize: 15,
                         textAlign: 'center',
