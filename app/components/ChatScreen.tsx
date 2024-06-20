@@ -2,27 +2,43 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Image, ImageBackground, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { useGlobalSearchParams } from 'expo-router'
-import usersJson from "../../UserData/users.json"
 import ChatInnerComp from './ChatInnerComp';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const ChatScreen = () => {
-    const { user }: any = useGlobalSearchParams();
-
-    const [userData, setuserData] = useState<any>(null);
+    const { user, senderId }: any = useGlobalSearchParams();
+    const [userData, setuserData] = useState<any>([]);
+    const [currentUser, setcurrentUser] = useState<any>();
 
     useEffect(() => {
-        if (user) {
-            const data = JSON.parse(user);
-            let checkUser = usersJson.find((item) => item.id === data.id);
-            if (checkUser) {
-                setuserData(checkUser);
-            }
-        }
-        else {
-            console.log("data Not Found");
-        }
-    }, [user])
+        dataRetrive()
+    }, [currentUser])
 
-    if (!userData) {
+    const dataRetrive = async () => {
+        try {
+            let data = await AsyncStorage.getItem("userData");
+            setcurrentUser(user);
+            if (data && user) {
+                let getData = JSON.parse(data);
+                let currentParseData = JSON.parse(currentUser);
+                let checkUser = getData.find((item: { id: any; }) => item.id === currentParseData.id)
+                if (checkUser) {
+                    setuserData(checkUser)
+                }
+                else {
+                    console.log("error at ChatScreen Comp");
+                }
+            }
+            else {
+                console.log("data not set");
+
+            }
+        } catch (er) {
+            console.log(er, " -er");
+
+        }
+    }
+
+    if (!userData && currentUser) {
         return (
             <View style={styles.container}>
                 <Text style={styles.headerText}>Loading...</Text>
@@ -31,25 +47,25 @@ const ChatScreen = () => {
     }
     else {
         return (
-   <ImageBackground source={require("../../assets/bgDark.jpg")} resizeMode='cover' style={{ flex: 1, justifyContent: 'center' }}>
-                    <View style={styles.container}>
-                        <View style={styles.header}>
-                            <View>
-                                <Image style={styles.img} source={{ uri: userData.userPicPath }}
-                                />
-                            </View>
-                            <View style={styles.secondaryBox}>
-                                <Text style={styles.headerText}>
-                                    {userData.userName}
-                                </Text>
-                                <Text style={styles.fadeText}>
-                                    {userData.status}
-                                </Text>
-                            </View>
+            <ImageBackground source={require("../../assets/bgDark.jpg")} resizeMode='cover' style={{ flex: 1, justifyContent: 'center' }}>
+                <View style={styles.container}>
+                    <View style={styles.header}>
+                        <View>
+                            <Image style={styles.img} source={{ uri: userData.userPicPath }}
+                            />
                         </View>
-                        <ChatInnerComp userDetail={userData} />
+                        <View style={styles.secondaryBox}>
+                            <Text style={styles.headerText}>
+                                {userData.userName}
+                            </Text>
+                            <Text style={styles.fadeText}>
+                                {userData.status}
+                            </Text>
+                        </View>
                     </View>
-                </ImageBackground>
+                    <ChatInnerComp userDetail={userData} />
+                </View>
+            </ImageBackground>
         );
     }
 }

@@ -42,11 +42,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         // marginTop: 30,
-        backgroundColor: '#ffff99',
+        backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
-        borderColor: 'black',
-        borderWidth: 2
+        // borderColor: 'black',
+        // borderWidth: 2
     },
     textDetail: {
         fontWeight: 'bold',

@@ -2,7 +2,10 @@ import React from 'react';
 import StartPage from './components/StartPage';
 
 const Index = () => {
-  return <StartPage />;
+  return (
+
+    <StartPage />
+  )
 };
 
 export default Index;

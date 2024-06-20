@@ -1,24 +1,40 @@
 import { faFaceLaughWink } from '@fortawesome/free-regular-svg-icons';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import UsersList from './UsersList';
 import { useGlobalSearchParams } from 'expo-router';
 const FrontPage = () => {
+    const [name, setname] = useState<string>()
+    const [currentUser, setCurrentUser] = useState();
     const { currentUser1 }: any = useGlobalSearchParams();
 
-    return (
-        <View style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.headerText}>
-                    Hey {JSON.parse(currentUser1).userName.split(' ')[0]}
-                </Text>
-                <FontAwesomeIcon icon={faFaceLaughWink} style={{ color: 'white' }} secondaryColor='red' />
+    useEffect(() => {
+        setCurrentUser(currentUser1)
+        setname(JSON.parse(currentUser1).userName.split(' ')[0])
+    }, [currentUser])
+
+    if (!currentUser) {
+        return (
+            <View style={{ flex: 1, justifyContent: 'center' }}>
+                <Text>Loading...</Text>
             </View>
-            <UsersList />
-        </View>
-    );
+        )
+    }
+    else {
+        return (
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <Text style={styles.headerText}>
+                        Hey {name}
+                    </Text>
+                    <FontAwesomeIcon icon={faFaceLaughWink} style={{ color: 'white' }} secondaryColor='red' />
+                </View>
+                <UsersList currentUserObj={currentUser1} />
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
